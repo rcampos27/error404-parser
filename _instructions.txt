@@ -1,0 +1,7 @@
+Dentro da pasta do projeto:
+Para a análise léxica, crie o arquivo 'program.txt', que irá conter o código em Error 404 a ser analisado. Execute o programa através do comando
+    python3 lexic.py
+
+Para a análise sintática, popule o arquivo 'grammar.txt' com a gramática, com não terminais em letras maiúsculas e terminais em minúsculas. O código a ser analisado será 
+o resultado do analisador léxico, no arquivo 'lexems.txt'. O programa pode ser executado através do comando
+    python3 syntactic.py

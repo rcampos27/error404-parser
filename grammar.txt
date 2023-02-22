@@ -1,0 +1,64 @@
+PROGRAM -> S
+S -> S STMT
+S -> ^
+STMT -> COND_STMT 
+STMT -> DEC_STMT ;
+STMT -> comment 
+COND_STMT -> IF_STMT
+COND_STMT -> FOR_STMT
+COND_STMT -> WHILE_STMT
+COND_STMT -> WHEN_STMT
+DEC_STMT -> DEF
+DEC_STMT -> ATTR 
+DEC_STMT -> INC
+DEC_STMT -> READ_STMT
+DEC_STMT -> WRITE_STMT
+IF_STMT -> if ( REL_EXP ) { S } ELSE_STMT
+ELSE_STMT -> else { S } 
+ELSE_STMT -> ^
+VAR -> EXP
+VAR -> string
+ATTR -> id = VAR
+DEF -> type ATTR
+INTEGER -> int 
+INTEGER -> int_sinal
+NUM -> INTEGER
+NUM -> FLOAT
+FLOAT -> float
+FLOAT -> float_sinal
+FOR_STMT -> for ( FOR_CONDITION ) { S }
+FOR_CONDITION -> DEF ; REL_EXP ; INC
+INC -> id ++
+INC -> id -- 
+WHEN_STMT -> when ( id ) { WHEN_CONDITION }
+WHEN_STMT -> when ( EXP ) { WHEN_CONDITION }
+WHEN_CONDITION -> IS_STMT DEFAULT_STMT
+IS_STMT -> is ( VAR ) { S } IS_STMT
+IS_STMT -> is ( VAR ) { S } 
+DEFAULT_STMT -> default { S } 
+DEFAULT_STMT -> ^
+WHILE_STMT -> while ( REL_EXP ) { S }
+READ_STMT -> read ( id )
+WRITE_STMT -> write ( id )
+EXP -> ARIT_EXP
+EXP -> REL_EXP 
+REL_EXP -> id rel_op id
+REL_EXP -> id rel_op NUM
+REL_EXP -> NUM rel_op id
+REL_EXP -> NUM rel_op NUM
+ARIT_EXP -> ARIT_EXP OP_2 ARIT_TERM
+ARIT_EXP -> ARIT_TERM
+ARIT_TERM -> ARIT_TERM OP_1 FACTOR
+ARIT_TERM -> FACTOR
+OP_2 -> arit_op_2
+OP_2 -> or
+OP_1 -> arit_op_1
+OP_1 -> and
+FACTOR -> ( ARIT_EXP )
+FACTOR -> id
+FACTOR -> NUM
+FACTOR -> LOGIC_FACTOR
+LOGIC_FACTOR -> not LOGIC_FACTOR
+LOGIC_FACTOR -> true
+LOGIC_FACTOR -> false
+
