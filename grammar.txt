@@ -20,16 +20,14 @@ VAR -> EXP
 VAR -> string
 ATTR -> id = VAR
 DEF -> type ATTR
-INTEGER -> int 
-INTEGER -> int_sinal
-NUM -> INTEGER
-NUM -> FLOAT
-FLOAT -> float
-FLOAT -> float_sinal
+NUM -> int 
+NUM -> int_sinal
+NUM -> float
+NUM -> float_sinal
 FOR_STMT -> for ( FOR_CONDITION ) { S }
 FOR_CONDITION -> DEF ; REL_EXP ; INC
-INC -> id ++
-INC -> id -- 
+INC -> id inc
+INC -> id inc
 WHEN_STMT -> when ( id ) { WHEN_CONDITION }
 WHEN_STMT -> when ( EXP ) { WHEN_CONDITION }
 WHEN_CONDITION -> IS_STMT DEFAULT_STMT

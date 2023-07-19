@@ -193,7 +193,7 @@ with open('program.txt') as f:
 tokens.append(('$', '$'))
 
 lexems = open("lexems.txt", "w")
-errors = open("errors.txt", "w")
+err_file = open("lexic_errors.txt", "w")
 
 for token in tokens:
     lexems.write(token[0])
@@ -201,5 +201,7 @@ for token in tokens:
     lexems.write(token[1])
     lexems.write('\n')
     print(f"[{token[0]}, {token[1]}]")
+
 for error in errors:
-    errors.write(f"Símbolo não reconhecido (Linha {error[1]}): {error[0]}")
+    print(f"Símbolo não reconhecido (Linha {error[1]}): {error[0]}")
+    err_file.write(f"Símbolo não reconhecido (Linha {error[1]}): {error[0]}")
