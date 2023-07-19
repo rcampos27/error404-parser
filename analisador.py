@@ -178,30 +178,6 @@ class Parser:
     def parse(self, tokens):
         w = ' '.join(t[0] for t in tokens)
         buffer = w.split()
-        d = ' '.join(t[1] for t in tokens)
-        lexval = d.split()
-        lex = []
-        tipos = []
-        val = []
-
-        arit_ops = {
-            '+' : op.add,
-            '-' : op.sub,
-            '*' : op.mul,
-            '/' : op.truediv,
-            '%' : op.mod,
-            'or': op.or_,
-            'and': op.and_,
-            'not': op.not_
-        }
-        rel_ops = {
-            '>=': op.ge,
-            '>': op.gt,
-            '<=': op.le,
-            '<': op.lt,
-            '=': op.eq,
-            '!=': op.ne
-        }
 
         ip = 0  # Fazer ip apontar para o primeiro símbolo de w$;
         stack = ['0']  # Seja s o estado do topo da pilha
@@ -268,9 +244,6 @@ class Parser:
                 stack.append(a)
                 stack.append(self.parse_table[s][a][1:])
                 results['stack'].append(' '.join(stack))
-                lex.append(lexval[ip])
-                tipos.append('')
-                val.append('')
 
                 ip += 1
                 if ip < len(buffer):
@@ -284,89 +257,8 @@ class Parser:
                 results['action'].append(
                     f'Reduz com #{rule}: {head} -> {" ".join(body)}')
 
-#TODO Dar 'pop' nas pilhas depois do processamento
                 if body != ('^',):
                     stack = stack[:-2*len(body)]
-                    if (rule == 20):                    
-                        val.append(lexval[ip])
-                        tipos.append("string")
-                        lex.append(lexval[ip])
-                    elif (rule == 21):
-                        if tipos[-3] == tipos[-1]:
-                            val[-3] = val[-1]
-                            lex = lex[:-1]
-                            tipos = tipos[:-1]
-                            val = val[:-1]
-                        else: print(f'Erro: Tipo não compatível (1)')
-                    elif (rule == 22):
-                        print(lex[-2])
-                        if lex[-2] == tipos[-1]: 
-                            simbolos.append(lex[-1], tipos[-1], val[-1]) 
-                            lex = lex[:-2]
-                            tipos = tipos[:-2]
-                            val = val[:-2]
-                        else: print(f'Erro: Tipo não compatível (2)')
-
-                        print(rule)
-                    elif (rule == 23 or rule == 24):
-                        val.append(lexval[ip])
-                        tipos.append("int")
-                        lex.append(lexval[ip])
-                    elif (rule == 25 or rule == 26):
-                        val.append(lexval[ip])
-                        tipos.append("float")
-                        lex.append(lexval[ip])
-                    elif (rule == 43 or rule == 44 or rule == 45 or rule == 46):
-                        if tipos[-1] == tipos[-3]: 
-                            print(lex[-2])
-                            if tipos[-3] == "int":
-                                res = rel_ops[lex[-2]](int(val[-1]), int(val[-3]))
-                            elif tipos[-3] == "float":
-                                res = rel_ops[lex[-2]](float(val[-1]), float(val[-3]))
-                            else: 
-                                res = rel_ops[lex[-2]](bool(val[-1]), bool(val[-3]))
-                                
-                            val = val[:-3]
-                            val.append(res)
-                            tipos = tipos[:-2]
-                    elif(rule == 47 or rule == 49):
-                        if tipos[-1] == tipos[-3]: 
-                            print(lex[-2])
-                            if tipos[-3] == "int":
-                                res = arit_ops[lex[-2]](int(val[-1]), int(val[-3]))
-                            elif tipos[-3] == "float":
-                                res = arit_ops[lex[-2]](float(val[-1]), float(val[-3]))
-                            else: 
-                                print(lex[-1])
-                                print(lex[-2])
-                                print(lex[-3])
-                                res = arit_ops[lex[-2]](bool(val[-1]), bool(val[-3]))
-                                
-                            val = val[:-3]
-                            val.append(res)
-                            tipos = tipos[:-2]
-                    elif (rule == 51 or rule == 53):
-                        print(rule)
-                    elif (rule == 52):
-                        print(rule)
-                    elif (rule == 54):
-                        print(rule)
-                    elif (rule == 56):
-                        el = ''
-                        for simb in simbolos:
-                            if simb['nome'] == lexval[ip]:
-                                el = simb
-                                break
-                        lex.append(el['val'])
-                        tipos.append(el['tipo'])
-                        val.append(el['val'])
-                    elif (rule == 59):
-                        print(rule)
-                    elif (rule == 60):
-                        print(rule)
-                    elif (rule == 61):
-                        print(rule)
-
                 stack.append(str(head))
                 # seja s’ o estado agora no topo da pilha; empilhar A e em seguida desvio[s’,A];
                 stack.append(str(self.parse_table[int(stack[-2])][head]))
@@ -375,8 +267,6 @@ class Parser:
             # senão se ação[s,a] = aceitar; retorna "Aceita"
             elif self.parse_table[s][a] == 'acc':
                 results['action'].append('Aceita')
-                for i, el in enumerate(self.G_indexed):
-                    print(f'{i}: {el}')
                 break
 
         return results, errors

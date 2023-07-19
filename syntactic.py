@@ -13,8 +13,6 @@ with open('lexems.txt') as file:
 
 grammar_text = open("grammar.txt", "r")
 g = Grammar(grammar_text.read())
-for i, item in enumerate(g.grammar.items()):
-    print(f'{i} : {item}')
 parser = Parser(g)
 results, errors = parser.parse(tokens)
 parser.writeToResult(results, errors)
